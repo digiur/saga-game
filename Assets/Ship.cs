@@ -5,6 +5,8 @@ using UnityEngine;
 public class Ship : MonoBehaviour
 {
     [SerializeField]
+    private GameObject sail;
+    [SerializeField]
     private float launchForceMultiplier = 1f;
     [SerializeField]
     private float gravitationalConstant = 0.6f;
@@ -14,6 +16,7 @@ public class Ship : MonoBehaviour
     private Vector2 mousePos;
     Rigidbody2D myBody;
     private GameObject[] gravitySources;
+    private Vector2 lastVelocity;
     void Start()
     {
         myBody = GetComponent<Rigidbody2D>();
@@ -22,10 +25,9 @@ public class Ship : MonoBehaviour
     void Update()
     {
         if (!sailing) return;
-
-        Vector2 v = myBody.velocity;
-        float angle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
-        myBody.SetRotation(angle - 90);
+    }
+    void LateUpdate()
+    {
     }
     void FixedUpdate()
     {
@@ -40,6 +42,16 @@ public class Ship : MonoBehaviour
             gravity *= (gravitationalConstant * otherBody.mass * myBody.mass) / (r * r);
             myBody.AddForce(gravity);
         }
+
+        Vector2 v = myBody.velocity;
+        float angle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+        myBody.SetRotation(angle - 90);
+
+        Vector2 a = v - lastVelocity;
+        angle = Mathf.Atan2(a.y, a.x) * Mathf.Rad2Deg;
+        sail.transform.eulerAngles = new Vector3(sail.transform.eulerAngles.x, sail.transform.eulerAngles.y, angle - 90);
+
+        lastVelocity = myBody.velocity;
     }
     void OnMouseDown()
     {
