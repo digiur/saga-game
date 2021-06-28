@@ -42,3 +42,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Hull
+    uniqueID: 3964430191
+    locked: 0
+  - name: Planet
+    uniqueID: 2667445465
+    locked: 0
+  - name: Sail
+    uniqueID: 3330524177
+    locked: 0
